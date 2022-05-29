@@ -16,7 +16,7 @@ input_file_directory = 'C:\\Users\\Greg\\Desktop\\Criterion'
 
 
 def getFilenamesToRead():
-    files = [f for f in os.listdir(input_file_directory) if re.match(r'Added.*txt', f)]
+    files = [f for f in os.listdir(input_file_directory) if re.match(r'Leaving.*txt', f)]
     return files
 
 
@@ -40,7 +40,17 @@ def loadCountries():
     return countrys
 
 def isThisACountryLine(line, countries_list):
-    return any(country in line for country in countries_list)
+    # Not enuf just to do the simple test, step it up
+    # to test all values if you have a match.
+    #
+    # Due to false positives when actors names had a match
+    # for a country, for instance `Frances Lee McCain`.
+    if any(country in line for country in countries_list):
+        for input_file_country in line.split(','):
+            if input_file_country.strip() in countries_list:
+                return True
+            else:
+                return False
 
 
 def prepareCountriesLine(input_line):
